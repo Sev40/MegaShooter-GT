@@ -15,7 +15,7 @@ var ANIM_MAX = 9;
 var Player = function()
 {	
 	this.sprite = new Sprite("ChuckNorris.png");
-	this.sprite.buildAnimation(12, 8, 165, 126, 0.05, [0, 1, 2, 3, 4, 5, 6, 7, 8]);
+	this.sprite.buildAnimation(12, 8, 165, 126, 0.05, [0, 1, 2, 3, 4, 5, 6, 7]);
 	this.sprite.buildAnimation(12, 8, 165, 126, 0.05, [8, 9, 10, 11, 12]);
 	this.sprite.buildAnimation(12, 8, 165, 126, 0.05, [13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27]);
 	this.sprite.buildAnimation(12, 8, 165, 126, 0.05, [28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40]);
@@ -42,6 +42,7 @@ var Player = function()
 	this.falling = true;
 	this.jumping = false;
 	this.direction = LEFT;
+	this.isDead = false;
 };
 
 Player.prototype.update = function(deltaTime)
@@ -155,6 +156,15 @@ Player.prototype.update = function(deltaTime)
 	if(keyboard.onKeyUp(keyboard.KEY_SPACE) == true)
 	{
 		shoot = false;
+	}
+	if(player.position.y < 600)
+	{
+		player.isDead = true;
+	}
+	if(player.isDead == true)
+	{
+		Ui.lives - 1;
+		Ui.health = 0;
 	}
 
 	this.velocity.x = collision.bound(this.velocity.x + (deltaTime * ddx), -MAXDX, MAXDX);

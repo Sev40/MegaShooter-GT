@@ -50,6 +50,7 @@ var MAXDY = METRE * 15;
 var ACCEL = MAXDX * 2;
 var FRICTION = MAXDX * 6;
 var JUMP = METRE * 1500;
+var DEBUG = 1;
 
 // some variables to calculate the Frames Per Second (FPS - this tells use
 // how fast our game is running, and allows us to make the game run at a 
@@ -57,13 +58,22 @@ var JUMP = METRE * 1500;
 var fps = 0;
 var fpsCount = 0;
 var fpsTime = 0;
+var score = 0;
+var highScore = 0;
 
-// load an image to draw
+var backgroundMusic;
+var sfxFire;
+
 var keyboard = new Keyboard();
 var collision = new Collision();
 var level = new LevelDetails();
 var enemyGrunt = new EnemyGrunt();
 var player = new Player();
+var ui = new Ui();
+var stateManager = new StateManager();
+//var bullet = new Bullet();
+
+stateManager.pushState( new SplashState() );
 
 function initialise(levelName){
 	for(var layerIdx = 0;
@@ -96,36 +106,54 @@ function initialise(levelName){
 			}
 		}
 	}
+	
+	musicBackground = new Howl(
+	{
+		urls: ["background.ogg"],
+		loop: true,
+		buffer: true,
+		volume: 0.5
+	} );
+	
+	musicBackground.play();
+	sfxFire = new Howl(
+	{
+		urls: ["fireEffect.ogg"],
+		buffer: true,
+		volume: 1,
+		onend: function() 
+		{
+			isSfxPlaying = false;
+		}
+	} );
+
 }
 
 function run()
 {
-	context.fillStyle = "#ccc";	
-	context.fillRect(0, 0, canvas.width, canvas.height);
-	level.drawMap(level1);
-	
 	var deltaTime = getDeltaTime();
+	stateManager.update(deltaTime);
+	stateManager.draw();
 	
-	player.update(deltaTime);
-	player.draw();
-	//enemyGrunt.update(deltaTime);
-	//enemyGrunt.draw();
-	
-	// update the frame counter 
-	fpsTime += deltaTime;
-	fpsCount++;
-	if(fpsTime >= 1)
+	if(DEBUG == 1)
 	{
-		fpsTime -= 1;
-		fps = fpsCount;
-		fpsCount = 0;
+		context.fillStyle = "#f00";
+		context.fillText("Left/Right Imput: " + ((keyboard.onKeyDown(keyboard.KEY_LEFT)) || (keyboard.onKeyDown(keyboard.KEY_RIGHT))), 400, 20, 100);
+		// update the frame counter 
+		fpsTime += deltaTime;
+		fpsCount++;
+		if(fpsTime >= 1)
+		{
+			fpsTime -= 1;
+			fps = fpsCount;
+			fpsCount = 0;
+		}		
+		
+		// draw the FPS
+		context.fillStyle = "#f00";
+		context.font="14px Arial";
+		context.fillText("FPS: " + fps, 550, 20, 100);
 	}
-	
-	// draw the FPS
-	context.fillStyle = "#f00";
-	context.font="14px Arial";
-	context.fillText("FPS: " + fps, 5, 20, 100);
-	context.fillText("Left/Right Imput: " + ((keyboard.isKeyDown(keyboard.KEY_LEFT)) || (keyboard.isKeyDown(keyboard.KEY_RIGHT))), 50, 20, 100);
 }
 
 initialise(level1);
