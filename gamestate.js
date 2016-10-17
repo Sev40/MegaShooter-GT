@@ -23,7 +23,7 @@ GameState.prototype.draw = function()
 {
 	context.fillStyle = "#ccc";	
 	context.fillRect(0, 0, canvas.width, canvas.height);
-	level.drawMap(level1);
+	level.drawMap(level1, 15);
 	player.draw();
 	enemyGrunt.draw();
 	ui.draw();

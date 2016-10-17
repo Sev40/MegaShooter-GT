@@ -52,9 +52,6 @@ var FRICTION = MAXDX * 6;
 var JUMP = METRE * 1500;
 var DEBUG = 1;
 
-// some variables to calculate the Frames Per Second (FPS - this tells use
-// how fast our game is running, and allows us to make the game run at a 
-// constant speed)
 var fps = 0;
 var fpsCount = 0;
 var fpsTime = 0;
@@ -74,6 +71,8 @@ var stateManager = new StateManager();
 //var bullet = new Bullet();
 
 stateManager.pushState( new SplashState() );
+
+//Most of the functions/variables are locked up into different files & constructs. The construct name is very similar to the file name so its easy to find/edit
 
 function initialise(levelName){
 	for(var layerIdx = 0;
@@ -138,7 +137,7 @@ function run()
 	if(DEBUG == 1)
 	{
 		context.fillStyle = "#f00";
-		context.fillText("Left/Right Imput: " + ((keyboard.onKeyDown(keyboard.KEY_LEFT)) || (keyboard.onKeyDown(keyboard.KEY_RIGHT))), 400, 20, 100);
+		context.fillText("Left/Right Imput: " + ((keyboard.isKeyDown(keyboard.KEY_LEFT)) || (keyboard.onKeyDown(keyboard.KEY_RIGHT))), 0, 20, 100);
 		// update the frame counter 
 		fpsTime += deltaTime;
 		fpsCount++;
@@ -152,7 +151,7 @@ function run()
 		// draw the FPS
 		context.fillStyle = "#f00";
 		context.font="14px Arial";
-		context.fillText("FPS: " + fps, 550, 20, 100);
+		context.fillText("FPS: " + fps, 0, 50, 100);
 	}
 }
 

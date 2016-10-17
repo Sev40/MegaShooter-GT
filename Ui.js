@@ -11,31 +11,38 @@ var Ui = function()
 	
 	this.health = 14;
 	this.lives = 3;
+	
+	this.gameTimer = level.allowedTime;
 }
 
 Ui.prototype.update = function(deltaTime)
 {
-	if( this.delay > 0 )
-	this.delay -= deltaTime;
-
-	if(this.delay <=0 && player.position.y > 600)
+	if(keyboard.isKeyDown(keyboard.KEY_A) == true)
 	{
-		this.health = 0;
-		this.lives - 1;
+		this.lives -1;
 	}
+	
+	this.gameTimer -= deltaTime;
 }
 
 Ui.prototype.draw = function()
 {
-	context.drawImage(this.healthBase, 200 - (this.healthBase.width+2), 420);
-	context.drawImage(this.livesBase, 330 - (this.livesBase.width + 2), 0);
+	//Draw GUI
+	context.drawImage(this.healthBase, 450 - (this.healthBase.width+2), 420);
+	context.drawImage(this.livesBase, 500 - (this.livesBase.width + 2), 0);
 	
+	//Draw Updating icons
 	for(var i=0; i<this.health; i++)
 	{
-		context.drawImage(this.healthBar, 65 + ((this.healthBar.width + 2) * i), 430);
+		context.drawImage(this.healthBar, 315 + ((this.healthBar.width + 2) * i), 430);
 	}
 	for(var i=0; i<this.lives; i++)
 	{
-		context.drawImage(this.life, 30 + ((this.life.width + 2) * i), 7);
+		context.drawImage(this.life, 200 + ((this.life.width + 2) * i), 7);
 	}
+	
+	//Arc Timer
+	context.beginPath();
+	context.arc(250, 250, 0, 0*Math.PI, (2*Math.PI) /* (this.gameTimer/level.time)*/);
+	context.stroke();
 }

@@ -3,13 +3,16 @@ var LevelDetails = function() {
 	this.image.src = "tileset.png";
 };
 
-LevelDetails.prototype.drawMap = function(levelName) {
+LevelDetails.prototype.drawMap = function(levelName, timeAllowed) {
 	
 	var maxTiles = Math.floor(SCREEN_WIDTH / TILE) + 2;
 	var tileX = collision.pixelToTile(player.position.x);
 	var offsetX = TILE + Math.floor(player.position.x % TILE);
 	var startX = tileX - Math.floor(maxTiles / 2);
 	var worldOffsetX = startX * TILE + offsetX;
+	
+	//In this code, I substituded several values with function things at the top - this will allow me to use different levels without having to rewrite the code
+	this.allowedTime = timeAllowed;
 	
 	if(startX < -1)
 	{
